@@ -1,0 +1,240 @@
+openapi: 3.0.1
+info:
+  title: Flow ea-workflow-executions-insights API
+  version: '1.0.0'
+paths:
+  /api/v2/workflows/{workflowUuid}/executions/{executionUuid}/execution-timeline:
+    get:
+      summary: "Returns the workflow execution timeline"
+      security:
+        - JWTToken: []
+      parameters:
+        - $ref: "#/components/parameters/workflowUuidParam"
+        - $ref: "#/components/parameters/executionUuidParam"
+      tags:
+        - execution-timeline
+      responses:
+        '200':
+          description: Returns the list of the activities that belong to a particular workflow execution
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/execution-timeline-response"
+        '303':
+          description: This response code designates that the execution information are generated from the old v1 version of the timeline endpoint (the neal variable is not present).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/execution-timeline-error-response"
+
+  /api/v2/workflows/{workflowUuid}/executions/{executionUuid}/thinklet/sapi/{thinkletId}:
+    get:
+      summary: "Returns details about Service API Thinklet execution"
+      security:
+        - JWTToken: [ ]
+      parameters:
+        - $ref: "#/components/parameters/workflowUuidParam"
+        - $ref: "#/components/parameters/executionUuidParam"
+        - $ref: "#/components/parameters/thinkletIdParam"
+      tags:
+        - sapi-thinklet-execution
+      responses:
+        '200':
+          description: Returns the details about Service API Thinklet execution
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sapi-thinklet-execution-response"
+        '303':
+          description: This response code means that NEAL definition is not available in workflow variables.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sapi-thinklet-details-error-response"
+        '404':
+          description: This response code means that something is not found. Not found entity type is provided in error code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sapi-thinklet-details-error-response"
+        '500':
+          description: This response code means that something wrong happened during fetching details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sapi-thinklet-details-error-response"
+components:
+  parameters:
+    workflowUuidParam:
+      name: workflowUuid
+      in: path
+      required: true
+      example: b4e1f43e-b5e1-11ee-adad-1e425aa17188
+      schema:
+        $ref: "#/components/schemas/uuid"
+    executionUuidParam:
+      name: executionUuid
+      in: path
+      required: true
+      example: 72b4fee1-e740-4dff-9fd2-08b2f15d3205
+      schema:
+        $ref: "#/components/schemas/uuid"
+    thinkletIdParam:
+      name: thinkletId
+      in: path
+      required: true
+      example: sapi_echo_for_postman
+      schema:
+        type: string
+
+
+  securitySchemes:
+    JWTToken:
+      type: http
+      scheme: bearer
+  responses:
+    401:
+      description: JWT token not valid or not provided
+    403:
+      description: User claims check failed
+
+  schemas:
+    uuid:
+      type: "string"
+      format: uuid
+    condition-extra-information:
+      type: "object"
+      properties:
+        gateInfo:
+          description: "The chosen gate for the condition."
+          type: "string"
+          required: true
+          example: "Yes"
+
+    connector-thinklet-extra-information:
+      type: "object"
+      properties:
+        connectorId:
+          description: "The connector id for the connector thinklet."
+          type: "string"
+          required: true
+          example: "azureAD2023"
+
+    execution-timeline-response:
+      type: array
+      items:
+        type: "object"
+        description: "The executed activity details."
+        properties:
+          id:
+            description: "The id of the activity."
+            type: "string"
+            required: true
+            example: "cond-1"
+          name:
+            description: "The name of the activity."
+            type: "string"
+            example: "Is flag true"
+            nullable: true
+          type:
+            description: "The type of the activity."
+            type: "string"
+            enum: ["startEvent", "endEvent", "remoteActionThinklet", "campaignThinklet", "sapiThinklet", "condition", "delay"]
+            example: "condition"
+            required: "true"
+          status:
+            description: "The status of the activity."
+            type: "string"
+            enum: [ "inProgress", "success", "failed", "cancelled", "expired"]
+            required: true
+            example: "SUCCESS"
+          startTime:
+            description: "The start time of the activity in UTC."
+            type: "string"
+            format: "date-time"
+            required: true
+            example: "2024-01-16T15:58:23.943"
+          endTime:
+            description: "The end time of the activity in UTC."
+            type: "string"
+            format: "date-time"
+            example: "2024-01-16T15:58:23.970"
+          extraInformation:
+            description: "Extra information for the activity, if present."
+            type: object
+            oneOf:
+              - $ref: '#/components/schemas/condition-extra-information'
+              - $ref: '#/components/schemas/connector-thinklet-extra-information'
+    sapi-thinklet-execution-response:
+      type: "object"
+      description: "The executed activity details."
+      properties:
+        status:
+          description: "Contains execution status if it is available."
+          type: "string"
+          example: "success"
+        responseHttpCode:
+          description: "Returns HTTP Code which was returned after service call execution."
+          type: "string"
+          example: "200"
+        inputs:
+          description: "Contains input parameters for Service API Thinklet: actual values of resource path, HTTP method and payload."
+          type: "array"
+          items:
+            $ref: '#/components/schemas/named-value'
+        outputs:
+          description: "Contains output parameters for Service API Thinklet"
+          type: "array"
+          items:
+            $ref: '#/components/schemas/named-value'
+
+    named-value:
+      type: "object"
+      description: "Parameter name and value"
+      properties:
+        name:
+          description: "Name of parameter"
+          type: "string"
+          example: "resourcePath"
+        value:
+          description: "Value of parameter"
+          type: "string"
+          example: "/post/ea-windows-03"
+    sapi-thinklet-details-error-response:
+      type: "object"
+      description: "Contains information about error"
+      properties:
+        errorCode:
+          description: "Contains reason of error"
+          type: "string"
+          enum: [ "THINKLET_NOT_FOUND", "NEAL_DEFINITION_NOT_FOUND", "PROCESS_NOT_FOUND" ]
+          example: "THINKLET_NOT_FOUND"
+        details:
+          description: "Detailed description of error"
+          type: "string"
+          example: "Thinklet with id=echo_for_postman is not found in the process 20090495-b61e-11ee-84de-4a287559c00c"
+
+    execution-timeline-error-response:
+      type: "object"
+      description: "Contains the information about an error when the execution timeline is rendered."
+      properties:
+        errorCode:
+          description: "Contains the reason of the error"
+          type: "string"
+          enum: [ "NEAL_DEFINITION_NOT_FOUND"]
+          example: "NEAL_DEFINITION_NOT_FOUND"
+        details:
+          description: "Detailed description of error"
+          type: "string"
+          example: "Thinklet with id=echo_for_postman is not found in the process 20090495-b61e-11ee-84de-4a287559c00c"
+
+
+
+
+
+
+
+
+
+
+
