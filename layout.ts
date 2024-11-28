@@ -29,10 +29,11 @@ function xyEdgeToElkEdge(edge: Edge): ElkExtendedEdge {
 }
 
 function xyNodeToElkNode(node: Node): ElkNode {
+  console.log('xyNodeToElkNode',);
   return {
     id: node.id,
-    width: node.measured?.width ?? 0,
-    height: node.measured?.height ?? 0,
+    width: node.measured?.width ?? 200,
+    height: node.measured?.height ?? 50,
   };
 }
 
@@ -101,14 +102,14 @@ export async function layout(
 
   const nextNodes = nodes.map((node) => {
     const elkNode = flatRoot.find((n) => n.id === node.id)!;
-    // const position = { x: elkNode.x!, y: elkNode.y! };
-    // const size = { width: elkNode.width!, height: elkNode.height! };
+    const position = { x: elkNode.x!, y: elkNode.y! };
+    const size = { width: elkNode.width!, height: elkNode.height! };
     // console.log('size', size);
     
     return {
       ...node,
-      // position,
-      style: { ...node.style },
+      position,
+      style: { ...node.style, ...size },
     };
   });
 

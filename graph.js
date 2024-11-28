@@ -1,9 +1,11 @@
+const position = { x: 0, y: 0 };
 export const nodes = [
   {
     "id": "start",
     "type": "input",
     "data": { "label": "Start" },
-    "position": { "x": 300, "y": 50 }
+    "style": { "width": "100%"},
+    position,
   },
 
   {
@@ -12,53 +14,53 @@ export const nodes = [
     "data": {
       "label": "Check Pending Inbounds\nCheck if there is any pending inbound action."
     },
-    "position": { "x": 300, "y": 150 }
+    position,
   },
 
   {
     "id": "pending_decision",
     "type": "default",
     "data": { "label": "Is there a pending restart?" },
-    "position": { "x": 300, "y": 250 }
+    position,
   },
   {
     "id": "pending_yes",
     "type": "default",
     "data": { "label": "Yes" },
-    "position": { "x": 150, "y": 350 }
+    position,
   },
   {
     "id": "pending_no",
     "type": "default",
     "data": { "label": "No\nEnd State" },
-    "position": { "x": 450, "y": 350 }
+    position,
   },
 
   {
     "id": "update_check",
     "type": "default",
     "data": { "label": "Is an update pending?" },
-    "position": { "x": 150, "y": 450 }
+    position,
   },
   {
     "id": "update_yes",
     "type": "default",
     "data": { "label": "Yes" },
-    "position": { "x": 100, "y": 550 }
+    position,
   },
   {
     "id": "update_no",
     "type": "default",
     "data": { "label": "No\nEnd State" },
-    "position": { "x": 200, "y": 550 }
+    position,
   },
 
   {
     "id": "group_permissions",
     "type": "default",
     "data": { "label": "User Permissions Check" },
-    "position": { "x": 100, "y": 650 },
-    "style": { "width": "100%", "height": 500, "background": "transparent", 'display': 'flex' }
+    "style": { "width": "100%", "background": "transparent", 'display': 'flex' },
+    position
   },
 
   {
@@ -67,92 +69,92 @@ export const nodes = [
     "data": {
       "label": "Campaign Prompt\nPrompt user to restart device now or later."
     },
-    "position": { "x": 50, "y": 50 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
 
   {
     "id": "restart_now",
     "type": "default",
     "data": { "label": "Restart Now" },
-    "position": { "x": -100, "y": 150 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
   {
     "id": "remind_hours",
     "type": "default",
     "data": { "label": "Remind in X hours\nOptions: 1 hour, 60 min" },
-    "position": { "x": 100, "y": 150 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
   {
     "id": "remind_tomorrow",
     "type": "default",
     "data": { "label": "Remind Tomorrow\nOptions: 3 hours, 24 hours" },
-    "position": { "x": 300, "y": 150 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
 
   {
     "id": "restart_decision",
     "type": "default",
     "data": { "label": "Has device been recently restarted?" },
-    "position": { "x": 100, "y": 250 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
 
   {
     "id": "restart_last_day",
     "type": "default",
     "data": { "label": "Restarted in last day\nEnd State" },
-    "position": { "x": 0, "y": 350 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
   {
     "id": "restart_default_exit",
     "type": "default",
     "data": { "label": "Default Exit\nExit after 3 times\nEnd State" },
-    "position": { "x": 200, "y": 350 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
   {
     "id": "restart_three_times",
     "type": "default",
     "data": { "label": "Request after 3 times\nEnd State" },
-    "position": { "x": 350, "y": 350 },
-    "parentId": "group_permissions"
+    "parentId": "group_permissions",
+    position
   },
 
   {
     "id": "os_check",
     "type": "default",
     "data": { "label": "Check Operating System" },
-    "position": { "x": 100, "y": 1150 }
+    position,
   },
   {
     "id": "os_macos",
     "type": "default",
     "data": { "label": "macOS" },
-    "position": { "x": 50, "y": 1250 }
+    position,
   },
   {
     "id": "os_windows",
     "type": "default",
     "data": { "label": "Windows" },
-    "position": { "x": 150, "y": 1250 }
+    position,
   },
 
   {
     "id": "restart_macos",
     "type": "default",
     "data": { "label": "Restart macOS Device\nEnd State" },
-    "position": { "x": 50, "y": 1350 }
+    position,
   },
   {
     "id": "restart_windows",
     "type": "default",
     "data": { "label": "Restart Windows Device\nEnd State" },
-    "position": { "x": 150, "y": 1350 }
+    position,
   }
 ];
   export const edges =[
