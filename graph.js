@@ -1,274 +1,297 @@
-
 export const nodes = [
+  {
+    "id": "start",
+    "type": "input",
+    "data": { "label": "Start" },
+    "position": { "x": 300, "y": 50 }
+  },
+
+  {
+    "id": "action_check",
+    "type": "default",
+    "data": {
+      "label": "Check Pending Inbounds\nCheck if there is any pending inbound action."
+    },
+    "position": { "x": 300, "y": 150 }
+  },
+
+  {
+    "id": "pending_decision",
+    "type": "default",
+    "data": { "label": "Is there a pending restart?" },
+    "position": { "x": 300, "y": 250 }
+  },
+  {
+    "id": "pending_yes",
+    "type": "default",
+    "data": { "label": "Yes" },
+    "position": { "x": 150, "y": 350 }
+  },
+  {
+    "id": "pending_no",
+    "type": "default",
+    "data": { "label": "No\nEnd State" },
+    "position": { "x": 450, "y": 350 }
+  },
+
+  {
+    "id": "update_check",
+    "type": "default",
+    "data": { "label": "Is an update pending?" },
+    "position": { "x": 150, "y": 450 }
+  },
+  {
+    "id": "update_yes",
+    "type": "default",
+    "data": { "label": "Yes" },
+    "position": { "x": 100, "y": 550 }
+  },
+  {
+    "id": "update_no",
+    "type": "default",
+    "data": { "label": "No\nEnd State" },
+    "position": { "x": 200, "y": 550 }
+  },
+
+  {
+    "id": "group_permissions",
+    "type": "default",
+    "data": { "label": "User Permissions Check" },
+    "position": { "x": 100, "y": 650 },
+    "style": { "width": "100%", "height": 500, "background": "transparent", 'display': 'flex' }
+  },
+
+  {
+    "id": "campaign_prompt",
+    "type": "default",
+    "data": {
+      "label": "Campaign Prompt\nPrompt user to restart device now or later."
+    },
+    "position": { "x": 50, "y": 50 },
+    "parentId": "group_permissions"
+  },
+
+  {
+    "id": "restart_now",
+    "type": "default",
+    "data": { "label": "Restart Now" },
+    "position": { "x": -100, "y": 150 },
+    "parentId": "group_permissions"
+  },
+  {
+    "id": "remind_hours",
+    "type": "default",
+    "data": { "label": "Remind in X hours\nOptions: 1 hour, 60 min" },
+    "position": { "x": 100, "y": 150 },
+    "parentId": "group_permissions"
+  },
+  {
+    "id": "remind_tomorrow",
+    "type": "default",
+    "data": { "label": "Remind Tomorrow\nOptions: 3 hours, 24 hours" },
+    "position": { "x": 300, "y": 150 },
+    "parentId": "group_permissions"
+  },
+
+  {
+    "id": "restart_decision",
+    "type": "default",
+    "data": { "label": "Has device been recently restarted?" },
+    "position": { "x": 100, "y": 250 },
+    "parentId": "group_permissions"
+  },
+
+  {
+    "id": "restart_last_day",
+    "type": "default",
+    "data": { "label": "Restarted in last day\nEnd State" },
+    "position": { "x": 0, "y": 350 },
+    "parentId": "group_permissions"
+  },
+  {
+    "id": "restart_default_exit",
+    "type": "default",
+    "data": { "label": "Default Exit\nExit after 3 times\nEnd State" },
+    "position": { "x": 200, "y": 350 },
+    "parentId": "group_permissions"
+  },
+  {
+    "id": "restart_three_times",
+    "type": "default",
+    "data": { "label": "Request after 3 times\nEnd State" },
+    "position": { "x": 350, "y": 350 },
+    "parentId": "group_permissions"
+  },
+
+  {
+    "id": "os_check",
+    "type": "default",
+    "data": { "label": "Check Operating System" },
+    "position": { "x": 100, "y": 1150 }
+  },
+  {
+    "id": "os_macos",
+    "type": "default",
+    "data": { "label": "macOS" },
+    "position": { "x": 50, "y": 1250 }
+  },
+  {
+    "id": "os_windows",
+    "type": "default",
+    "data": { "label": "Windows" },
+    "position": { "x": 150, "y": 1250 }
+  },
+
+  {
+    "id": "restart_macos",
+    "type": "default",
+    "data": { "label": "Restart macOS Device\nEnd State" },
+    "position": { "x": 50, "y": 1350 }
+  },
+  {
+    "id": "restart_windows",
+    "type": "default",
+    "data": { "label": "Restart Windows Device\nEnd State" },
+    "position": { "x": 150, "y": 1350 }
+  }
+];
+  export const edges =[
     {
-      id: '1',
-      type: 'input',
-      data: { label: 'Start' },
-      position: { x: 200, y: 5 },
-      width: 200,
+      "id": "e-start-action_check",
+      "source": "start",
+      "target": "action_check",
+      "label": "Start Process"
     },
     {
-      id: '2',
-      data: { label: 'Check Pending Inbounds Check if there is any pending inbound action.' },
-      position: { x: 200, y: 65 },
-      width: 200,
+      "id": "e-action_check-pending_decision",
+      "source": "action_check",
+      "target": "pending_decision",
+      "label": "Next Step"
     },
     {
-      id: '3',
-      data: { label: 'Is there a pending restart?' },
-      position: { x: 200, y: 155 },
-      width: 200, 
+      "id": "e-pending_decision-pending_yes",
+      "source": "pending_decision",
+      "target": "pending_yes",
+      "label": "Yes"
     },
     {
-      id: '4a',
-      data: { label: 'Yes' },
-      position: { x: 0, y: 205 },
-      width: 100, 
+      "id": "e-pending_decision-pending_no",
+      "source": "pending_decision",
+      "target": "pending_no",
+      "label": "No"
+    },
+
+    {
+      "id": "e-pending_yes-update_check",
+      "source": "pending_yes",
+      "target": "update_check",
+      "label": "Check Update"
     },
     {
-      id: '4b',
-      data: { label: 'No' },
-      position: { x: 450, y: 205 },
-      width: 100, 
+      "id": "e-update_check-update_yes",
+      "source": "update_check",
+      "target": "update_yes",
+      "label": "Yes"
     },
     {
-      id: '5',
-      data: { label: 'Is an update pending?' },
-      position: { x: 200, y: 265 },
-      width: 200, 
+      "id": "e-update_check-update_no",
+      "source": "update_check",
+      "target": "update_no",
+      "label": "No"
+    },
+
+    {
+      "id": "e-update_yes-group_permissions",
+      "source": "update_yes",
+      "target": "group_permissions",
+      "label": "Permissions Check"
     },
     {
-      id: '6a',
-      data: { label: 'Yes' },
-      position: { x: 0, y: 325 },
-      width: 100, 
+      "id": "e-campaign_prompt-restart_now",
+      "source": "campaign_prompt",
+      "target": "restart_now",
+      "label": "Restart Now"
     },
     {
-      id: '6b',
-      data: { label: 'No' },
-      position: { x: 450, y: 325 },
-      width: 100, 
+      "id": "e-campaign_prompt-remind_hours",
+      "source": "campaign_prompt",
+      "target": "remind_hours",
+      "label": "Remind X hours"
     },
     {
-      id: '7',
-      data: null,
-      position: { x: -300, y: 395 },
-      width: 1200,
-      height: 400,
-      style: {
-        backgroundColor: 'rgba(240,240,240,0.25)',
-      },
+      "id": "e-campaign_prompt-remind_tomorrow",
+      "source": "campaign_prompt",
+      "target": "remind_tomorrow",
+      "label": "Remind Tomorrow"
+    },
+
+    {
+      "id": "e-remind_hours-restart_decision",
+      "source": "remind_hours",
+      "target": "restart_decision",
+      "label": "Device Check"
     },
     {
-      id: '8',
-      data: { label: 'Remind Tomorrow.' },
-      position: { x: 500, y: 50 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
+      "id": "e-remind_tomorrow-restart_decision",
+      "source": "remind_tomorrow",
+      "target": "restart_decision",
+      "label": "Device Check"
+    },
+
+    {
+      "id": "e-restart_decision-restart_last_day",
+      "source": "restart_decision",
+      "target": "restart_last_day",
+      "label": "Last Day"
     },
     {
-      id: '9a',
-      data: { label: 'Campaign Promp Prompt user to restart device now or later.' },
-      position: { x: 40, y: 135 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
+      "id": "e-restart_decision-restart_default_exit",
+      "source": "restart_decision",
+      "target": "restart_default_exit",
+      "label": "Default Exit"
     },
     {
-      id: '9b',
-      data: { label: 'Remind in X hours Options: 1 hour, 60' },
-      position: { x: 500, y: 135 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
+      "id": "e-restart_decision-restart_three_times",
+      "source": "restart_decision",
+      "target": "restart_three_times",
+      "label": "Request 3 times"
+    },
+
+    {
+      "id": "e-restart_default_exit-os_check",
+      "source": "restart_default_exit",
+      "target": "os_check",
+      "label": "Check OS"
     },
     {
-      id: '9c',
-      data: { label: 'Restart Now' },
-      position: { x: 880, y: 135 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
+      "id": "e-os_check-os_macos",
+      "source": "os_check",
+      "target": "os_macos",
+      "label": "macOS"
     },
     {
-      id: '10',
-      data: { label: 'Default Exit' },
-      position: { x: 20, y: 400 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
-      style: {
-        marginTop: 20,
-      }
+      "id": "e-os_check-os_windows",
+      "source": "os_check",
+      "target": "os_windows",
+      "label": "Windows"
+    },
+
+    {
+      "id": "e-os_macos-restart_macos",
+      "source": "os_macos",
+      "target": "restart_macos",
+      "label": "Restart macOS"
     },
     {
-      id: '11',
-      data: { label: 'Exit After X times' },
-      position: { x: 280, y: 400 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
-      style: {
-        marginTop: 20,
-      }
+      "id": "e-os_windows-restart_windows",
+      "source": "os_windows",
+      "target": "restart_windows",
+      "label": "Restart Windows"
     },
     {
-      id: '12',
-      data: { label: 'Exit After X times' },
-      position: { x: 280, y: 400 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
-      style: {
-        marginTop: 20,
-      }
-    },
-    {
-      id: '13',
-      data: { label: 'Exit After X minutes' },
-      type: 'output',
-      position: { x: 720, y: 400 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
-      style: {
-        marginTop: 20,
-      }
-    },
-    {
-      id: '14',
-      data: { label: 'Custom exit' },
-      position: { x: 960, y: 400 },
-      parentId: '7',
-      extent: 'parent',
-      width: 200,
-      style: {
-        marginTop: 20,
-      }
-    },
-    {
-      id: '15',
-      data: { label: 'Check Operating System' },
-      position: { x: 200, y: 825 },
-      width: 200,
-    },
-    {
-      id: '15a',
-      data: { label: 'macOS' },
-      position: { x: 0, y: 895 },
-      width: 200,
-    },
-    {
-      id: '15b',
-      data: { label: 'Windows' },
-      position: { x: 400, y: 895 },
-      width: 200,
-    },
-    {
-      id: '16',
-      data: { label: 'End' },
-      position: { x: 0, y: 955 },
-      width: 200,
-    },
-    {
-      id: '17',
-      data: { label: 'End' },
-      position: { x: 400, y: 955 },
-      width: 200,
-    },
-  ];
-   
-  export const edges = [
-      {
-          "id": "e1-2",
-          "source": "1",
-          "target": "2"
-      },
-      {
-          "id": "e2-3",
-          "source": "2",
-          "target": "3"
-      },
-      {
-          "id": "e3-4a",
-          "source": "3",
-          "target": "4a"
-      },
-      {
-          "id": "e3-4b",
-          "source": "3",
-          "target": "4b"
-      },
-      {
-          "id": "e4a-5",
-          "source": "4b",
-          "target": "5"
-      },
-      {
-          "id": "e5-6a",
-          "source": "5",
-          "target": "6a"
-      },
-      {
-          "id": "6a-7",
-          "source": "6a",
-          "target": "7"
-      },
-      {
-          "id": "7-13",
-          "source": "7",
-          "target": "15"
-      },
-      {
-          "id": "8-9a",
-          "source": "8",
-          "target": "9a"
-      },
-      {
-          "id": "8-9b",
-          "source": "8",
-          "target": "9b"
-      },
-      {
-          "id": "8-9c",
-          "source": "8",
-          "target": "9c"
-      },
-      {
-          "id": "15-15a",
-          "source": "15",
-          "target": "15a"
-      },
-      {
-          "id": "15-15b",
-          "source": "15",
-          "target": "15b"
-      },
-      {
-          "id": "15b-16",
-          "source": "15a",
-          "target": "16"
-      },
-      {
-          "id": "15a-17",
-          "source": "15b",
-          "target": "17"
-      },
-      {
-          "source": "9a",
-          "target": "10",
-          "id": "xy-edge__9a-10"
-      },
-      {
-          "source": "9b",
-          "target": "11",
-          "id": "xy-edge__9b-11"
-      },
-      {
-          "source": "9c",
-          "target": "14",
-          "id": "xy-edge__9c-14"
-      }
-  ];
-   
+      "id": "update_yes-campaign_prompt",
+      "source": "update_yes",
+      "target": "campaign_prompt",
+      "label": "Campaign Prompt"
+    }
+  ]
